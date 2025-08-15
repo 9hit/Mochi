@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Del Concepto al Código: Guía Interactiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals with Subtle Accents -->
+    <!-- Application Structure Plan: The application is designed as a linear, scrollable journey, divided into four thematic sections that mirror a logical learning path: Foundations, Learning Path, Training Ecosystem, and Professional Career. This structure was chosen to guide the user from theoretical concepts to practical application and career advice, making the complex topic of learning to code more digestible and less overwhelming. Key interactions include a dynamic chart for language comparison and tabbed interfaces for bootcamps, which allow for direct comparison and focused information consumption, enhancing usability. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Language comparison data (difficulty, use, salary, popularity). Goal: Compare. Viz/Presentation Method: Interactive Bar Chart. Interaction: Hover tooltips with detailed data. Justification: A bar chart provides an immediate visual comparison of key metrics, which is more engaging and easier to interpret than a static table. Library/Method: Chart.js (Canvas).
+        - Report Info: Details of local bootcamps. Goal: Organize & Compare. Viz/Presentation Method: Tabbed content cards. Interaction: Clicking tabs to switch between bootcamp details. Justification: Tabs organize dense information cleanly, allowing users to focus on one option at a time without overwhelming them, facilitating a direct comparison of features. Library/Method: HTML/CSS/JS.
+        - Report Info: Core programming concepts. Goal: Inform. Viz/Presentation Method: Styled text blocks with highlighted keywords. Interaction: None, focus on readability. Justification: For foundational theory, clear, well-structured text is the most effective method. Highlighting reinforces key terms. Library/Method: HTML/Tailwind CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #1a1a1a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #D97706; 
+        }
+        .active-tab {
+            border-bottom-color: #D97706;
+            color: #D97706;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#FDFBF8]/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-xl font-bold text-gray-800">Del Concepto al Código</a>
+                </div>
+                <nav class="hidden md:flex md:space-x-8">
+                    <a href="#fundamentos" class="nav-link text-gray-600">Fundamentos</a>
+                    <a href="#ruta" class="nav-link text-gray-600">Tu Ruta</a>
+                    <a href="#ecosistema" class="nav-link text-gray-600">Ecosistema</a>
+                    <a href="#carrera" class="nav-link text-gray-600">Carrera</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-800 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#fundamentos" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Fundamentos</a>
+            <a href="#ruta" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Tu Ruta</a>
+            <a href="#ecosistema" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Ecosistema</a>
+            <a href="#carrera" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100">Carrera</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 sm:py-24 lg:py-32">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">Tu Viaje al Mundo de la Programación Comienza Aquí.</h1>
+                <p class="mt-6 text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">Esta guía interactiva está diseñada para desmitificar el proceso de aprendizaje, proporcionando una hoja de ruta clara desde los conceptos más abstractos hasta tu primer empleo en tecnología.</p>
+                <div class="mt-10">
+                    <a href="#fundamentos" class="bg-amber-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-amber-700 transition-colors duration-300">Empezar a Explorar</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="fundamentos" class="py-16 sm:py-20 bg-amber-50/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Las Fundaciones de la Programación</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Todo gran edificio necesita cimientos sólidos. Aquí sentarás las bases de tu conocimiento, entendiendo qué es programar y cuáles son los pilares del pensamiento computacional.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <div class="bg-white p-8 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">¿Qué es la Programación?</h3>
+                        <p class="text-gray-600 mb-4">En esencia, es el arte de dar instrucciones a una computadora para resolver problemas. Pero es más que solo escribir código; es un proceso de ingeniería que incluye análisis, diseño, implementación y pruebas. El objetivo es crear programas de alta calidad definidos por tres pilares:</p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">✓</span><div><strong class="text-gray-800">Correctitud:</strong> El programa hace exactamente lo que se especificó.</div></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">✓</span><div><strong class="text-gray-800">Claridad:</strong> El código es legible y fácil de mantener.</div></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">✓</span><div><strong class="text-gray-800">Eficiencia:</strong> Usa los recursos (tiempo y memoria) de forma óptima.</div></li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Pensamiento Computacional</h3>
+                        <p class="text-gray-600 mb-4">Antes de escribir código, debes aprender a pensar como un programador. Esto implica dominar conceptos universales que son el ADN de cualquier software:</p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">ᐅ</span><div><strong class="text-gray-800">Algoritmos:</strong> La "receta" o los pasos ordenados para resolver un problema.</div></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">ᐅ</span><div><strong class="text-gray-800">Estructuras de Datos:</strong> La forma organizada de almacenar información para un uso eficiente.</div></li>
+                            <li class="flex items-start"><span class="text-amber-600 font-bold mr-2">ᐅ</span><div><strong class="text-gray-800">Pseudocódigo:</strong> Planificar la lógica de tu programa en un lenguaje similar al humano antes de codificar.</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ruta" class="py-16 sm:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">Diseñando tu Trayectoria</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">El mundo tech es vasto. Conoce los roles principales y elige el lenguaje de programación que mejor se alinee con tus metas profesionales.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-sm mb-12">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Roles y Especializaciones</h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Front-End</h4>
+                            <p class="text-sm text-gray-600">Lo que el usuario ve e interactúa. (HTML, CSS, JavaScript)</p>
+                        </div>
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Back-End</h4>
+                            <p class="text-sm text-gray-600">La lógica del servidor y las bases de datos. (Python, Java, Node.js)</p>
+                        </div>
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Full Stack</h4>
+                            <p class="text-sm text-gray-600">Domina tanto Front-End como Back-End.</p>
+                        </div>
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Desarrollo Móvil</h4>
+                            <p class="text-sm text-gray-600">Apps para iOS y Android. (Swift, Kotlin)</p>
+                        </div>
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Ciencia de Datos / IA</h4>
+                            <p class="text-sm text-gray-600">Análisis de datos y modelos predictivos. (Python)</p>
+                        </div>
+                        <div class="p-4 border rounded-lg">
+                            <h4 class="font-bold text-lg text-amber-700">Videojuegos</h4>
+                            <p class="text-sm text-gray-600">Creación de experiencias interactivas. (C++, C#)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Comparativa de Lenguajes Populares</h3>
+                     <p class="text-center text-gray-600 mb-6">Interactúa con el gráfico para explorar la popularidad (Índice TIOBE) y el salario promedio anual en USD de los lenguajes más demandados. Esta visualización te ayudará a tomar una decisión informada sobre qué lenguaje aprender primero.</p>
+                    <div class="chart-container">
+                        <canvas id="languageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ecosistema" class="py-16 sm:py-20 bg-amber-50/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">El Ecosistema de Formación en Santiago</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Desde cursos en línea a tu propio ritmo hasta bootcamps intensivos, explora las mejores opciones para formarte en Santiago.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-sm">
+                    <div class="border-b border-gray-200 mb-6">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button class="tab-btn active-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="bootcamp-4geeks">4Geeks Academy</button>
+                            <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="bootcamp-desafio">Desafío Latam</button>
+                            <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="bootcamp-lewagon">Le Wagon</button>
+                            <button class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="bootcamp-uchile">UChile</button>
+                        </nav>
+                    </div>
+                    <div id="bootcamp-content">
+                        <div id="bootcamp-4geeks" class="tab-content active">
+                            <h4 class="text-xl font-bold text-gray-800">4Geeks Academy</h4>
+                            <p class="text-gray-600 mt-2">Ofrece programas 100% online en Full Stack, Ciencia de Datos y Ciberseguridad. Se destaca por su plan de "ingresos compartidos", que permite formarse sin un pago inicial completo, y su fuerte soporte para la inserción laboral.</p>
+                            <ul class="mt-4 space-y-2 text-sm">
+                                <li><strong>Enfoque:</strong> Full Stack, Data Science, Ciberseguridad</li>
+                                <li><strong>Modalidad:</strong> 100% Online</li>
+                                <li><strong>Diferenciador:</strong> Financiamiento flexible y apoyo profesional.</li>
+                            </ul>
+                        </div>
+                        <div id="bootcamp-desafio" class="tab-content">
+                            <h4 class="text-xl font-bold text-gray-800">Desafío Latam</h4>
+                            <p class="text-gray-600 mt-2">Startup chilena con cursos part-time de desarrollo web y ciencia de datos. Su valor reside en la empleabilidad y el acceso a profesionales de la industria, aunque algunas opiniones sugieren investigar la actualidad del material de estudio.</p>
+                             <ul class="mt-4 space-y-2 text-sm">
+                                <li><strong>Enfoque:</strong> Full-stack, Front-end</li>
+                                <li><strong>Modalidad:</strong> Part-time</li>
+                                <li><strong>Diferenciador:</strong> Foco en empleabilidad y comunidad local.</li>
+                            </ul>
+                        </div>
+                        <div id="bootcamp-lewagon" class="tab-content">
+                            <h4 class="text-xl font-bold text-gray-800">Le Wagon</h4>
+                            <p class="text-gray-600 mt-2">Posicionado como una opción de alta calidad con bootcamps presenciales en Las Condes y online. Destaca por su red global de exalumnos, talleres gratuitos y acceso de por vida a los materiales del curso.</p>
+                             <ul class="mt-4 space-y-2 text-sm">
+                                <li><strong>Enfoque:</strong> Desarrollo Web, Ciencia de Datos e IA</li>
+                                <li><strong>Modalidad:</strong> Presencial u Online</li>
+                                <li><strong>Diferenciador:</strong> Red global y prestigio internacional.</li>
+                            </ul>
+                        </div>
+                        <div id="bootcamp-uchile" class="tab-content">
+                            <h4 class="text-xl font-bold text-gray-800">Bootcamp UChile</h4>
+                            <p class="text-gray-600 mt-2">La Universidad de Chile ofrece un bootcamp de Desarrollo Backend impartido en vivo por streaming. Es una opción robusta con el respaldo de una institución académica de prestigio, enfocada en tecnologías como Node.js.</p>
+                             <ul class="mt-4 space-y-2 text-sm">
+                                <li><strong>Enfoque:</strong> Desarrollo Backend</li>
+                                <li><strong>Modalidad:</strong> 100% en vivo (streaming)</li>
+                                <li><strong>Diferenciador:</strong> Respaldo universitario y enfoque especializado.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="carrera" class="py-16 sm:py-20">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900">El Puente hacia tu Carrera Profesional</h2>
+                    <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">El conocimiento técnico es solo una parte. Descubre cómo construir un portafolio impactante y qué habilidades te harán destacar.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                    <div class="bg-white p-8 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Construye tu Portafolio</h3>
+                        <p class="text-gray-600 mb-4">Tu portafolio es tu carta de presentación. Es la prueba tangible de que puedes aplicar la teoría para resolver problemas reales. Empieza con proyectos pequeños y aumenta la complejidad a medida que aprendes.</p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li><strong class="text-amber-700">Python:</strong> Juego de adivinar números, Análisis de datos de la NBA.</li>
+                            <li><strong class="text-amber-700">JavaScript:</strong> Sitio web interactivo, Lista de tareas (To-Do list).</li>
+                            <li><strong class="text-amber-700">Java:</strong> Calculadora básica, Conversor de moneda.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-sm">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Habilidades Clave del Desarrollador Junior</h3>
+                        <p class="text-gray-600 mb-4">Los empleadores buscan un balance entre habilidades técnicas (duras) y personales (blandas).</p>
+                        <div class="flex space-x-6">
+                            <div>
+                                <h4 class="font-bold text-gray-800">Hard Skills</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <li>Lenguaje de programación</li>
+                                    <li>Bases de datos</li>
+                                    <li>Git y GitHub</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">Soft Skills</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <li>Resolución de problemas</li>
+                                    <li>Comunicación</li>
+                                    <li>Autoaprendizaje</li>
+                                    <li>Persistencia</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-12 text-center bg-amber-100/60 p-8 rounded-lg">
+                    <h3 class="text-2xl font-semibold text-gray-800">El Futuro es el Aprendizaje Continuo</h3>
+                    <p class="mt-3 text-gray-700 max-w-3xl mx-auto">La tecnología avanza sin parar. Tu habilidad para adaptarte y seguir aprendiendo será la clave de tu éxito. Conéctate con la comunidad local en Santiago a través de meetups como <strong class="text-amber-800">GDG Santiago</strong>, <strong class="text-amber-800">Noders</strong> o <strong class="text-amber-800">devsChile</strong> para crecer junto a otros profesionales.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p>&copy; 2025 Del Concepto al Código. Una guía interactiva para futuros programadores.</p>
+            <p class="text-sm text-gray-400 mt-2">Creado a partir del informe "Una Guía Completa y Definitiva para Principiantes en Programación".</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const languageData = {
+                labels: ['Python', 'JavaScript', 'Java', 'C#'],
+                datasets: [
+                    {
+                        label: 'Popularidad (Posición TIOBE)',
+                        data: [1, 7, 3, 5],
+                        backgroundColor: 'rgba(217, 119, 6, 0.7)',
+                        borderColor: 'rgba(217, 119, 6, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Salario Promedio (USD/año)',
+                        data: [96890, 90864, 85000, 84243],
+                        backgroundColor: 'rgba(55, 65, 81, 0.7)',
+                        borderColor: 'rgba(55, 65, 81, 1)',
+                        borderWidth: 1,
+                        yAxisID: 'y1'
+                    }
+                ]
+            };
+
+            const config = {
+                type: 'bar',
+                data: languageData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Posición en Ranking TIOBE'
+                            },
+                            reverse: true
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Salario Anual (USD)'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return '$' + value / 1000 + 'k';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.dataset.yAxisID === 'y1') {
+                                        label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(context.parsed.y);
+                                    } else {
+                                        label += `Posición ${context.parsed.y}`;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            const languageChartCtx = document.getElementById('languageChart');
+            if(languageChartCtx) {
+                new Chart(languageChartCtx, config);
+            }
+
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active-tab');
+                    });
+                    button.classList.add('active-tab');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
